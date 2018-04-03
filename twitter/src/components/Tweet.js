@@ -2,21 +2,16 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import axios from 'axios'
 import Axios from 'axios';
-import {updateTweet} from './TweetList'
+import { updateTweet } from './TweetList'
+import { Button, Card, Image } from 'semantic-ui-react'
 
 class Tweet extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { editable: false, title: this.props.username, body:this.props.body };
+    this.state = { editable: false, title: this.props.username, body: this.props.body };
     this.handleEdit = this.handleEdit.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
   }
-
-  onUpdate = (tweet) => {
-    this.props.onUpdate(tweet);
-  };
-
-  //handleUpVote = () => (this.props.onVote(this.props.id));
 
   handleUpdate = (tweet) => {
     axios.put(`http://localhost:3001/api/v1/tweets/${this.props.id}`, {
@@ -33,36 +28,39 @@ class Tweet extends React.Component {
       var id = this.props.id;
       var username = this.refs.username.value;
       var body = this.refs.body.value;
-      var twt = { id: id,username: username, body: body};
+      var twt = { id: id, username: username, body: body };
       this.handleUpdate(twt);
       window.location.reload(false)
     }
     this.setState({ editable: !this.state.editable })
   }
 
-  deleteTweet = () => (axios.delete(
-    `http://localhost:3001/api/v1/tweets/${this.props.id}`), window.location.reload(false)
-  );
-
   render() {
-    var u_field = this.state.editable ? <p><input ref="username" name="username" className="input" defaultValue={this.props.username} type="string" onChange={this.handleChange} /> </p> : <a href="#"> {this.props.username} </a>;
+    var u_field = this.state.editable ? <p><input ref="username" name="username" className="input" defaultValue={this.props.username} type="string" onChange={this.handleChange} /> </p> : <a href=""> {this.props.username} </a>;
     var b_field = this.state.editable ? <input ref="body" name="body" className="input" defaultValue={this.props.body} type="string" /> : <p> {this.props.body} </p>;
 
     return (
-      <div className='item' >
-        <div className='middle aligned content'>
-          <div className='header'>
-            <p> &nbsp;&nbsp;&nbsp;&nbsp;
-            <button className="DeleteTweetButton ui button red mini" onClick={this.deleteTweet}>Delete</button>
-              <button className="EditTweetButton ui button teal mini" onClick={this.handleEdit}>{this.state.editable ? 'Submit' : 'Edit'}</button>
-            </p>
-          </div>
-          <div className="field">
+      <Card fluid>
+        <Card.Content>
+          <Image floated='right' size='mini' src='images/avatars/jenny.jpg' />
+          <Card.Header>
             {u_field}
+        </Card.Header>
+          <Card.Meta>
+            New User
+        </Card.Meta>
+          <Card.Description>
             {b_field}
+        </Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <div className='ui three buttons'>
+            <button className="EditTweetButton ui button teal mini" onClick={this.handleEdit}>{this.state.editable ? 'Submit' : 'Edit'}</button>
+            &nbsp;<button className="ReTweetButton ui button purple mini" >Retweet</button>
+            &nbsp;<button className="LikeButton ui button pink mini" >Like</button>
           </div>
-        </div>
-      </div>
+        </Card.Content>
+      </Card>
     );
   }
 }

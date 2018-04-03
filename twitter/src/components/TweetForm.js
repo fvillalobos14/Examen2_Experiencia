@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import {Segment} from 'semantic-ui-react'
 
 class TweetForm extends Component{
     constructor(props){
@@ -35,7 +36,8 @@ class TweetForm extends Component{
 
       render() {
         return (
-            <center> <form class = "ui form" onBlur={this.handleBlur}>
+            <Segment gray>
+                <center> <form class = "ui form" onBlur={this.handleBlur}>
                 <div class="ui grid">
                 <div class="three column row">
                     <div class="column"></div>
@@ -54,6 +56,7 @@ class TweetForm extends Component{
                     </div>
                 </div>
             </form></center>
+            </Segment>
           );
       }
 }
